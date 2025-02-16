@@ -1,0 +1,8 @@
+test --sandbox_tmpfs_path=/tmp
+
+common --java_language_version=17
+common --java_runtime_version=remotejdk_17
+common --tool_java_language_version=17
+common --tool_java_runtime_version=remotejdk_17
+
+test --build_tests_only
