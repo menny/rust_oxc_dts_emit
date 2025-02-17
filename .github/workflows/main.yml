@@ -27,9 +27,9 @@ jobs:
       - name: formatting
         run: |
           bazel run //tools:format
-          if [[ $(git status --porcelain) ]]; then echo "**** run 'bazel run //tools:format' to fix formatting errors"; exit 1; fi
+          if [[ $(git status --porcelain) ]]; then echo "**** run 'bazel run //tools:format' to fix formatting errors"; git diff; exit 1; fi
           bazel run @rules_rust//:rustfmt
-          if [[ $(git status --porcelain) ]]; then echo "**** run 'bazel run @rules_rust//:rustfmt' to fix formatting errors"; exit 1; fi
+          if [[ $(git status --porcelain) ]]; then echo "**** run 'bazel run @rules_rust//:rustfmt' to fix formatting errors"; git diff; exit 1; fi
       - name: test
         run: bazel test //...
   build_release_binaries:
