@@ -5,6 +5,8 @@ module(
     version = "0.0.0",
 )
 
+bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "aspect_bazel_lib", version = "2.9.4")
 bazel_dep(name = "aspect_rules_lint", version = "1.0.7")
 bazel_dep(name = "buildifier_prebuilt", version = "7.3.1")
@@ -14,18 +16,7 @@ multitool = use_extension("@rules_multitool//multitool:extension.bzl", "multitoo
 multitool.hub(lockfile = "//tools:multitool.lock.json")
 use_repo(multitool, "multitool")
 
-bazel_dep(
-    name = "rules_rust",
-    version = "0.57.1",
-)
-bazel_dep(
-    name = "platforms",
-    version = "0.0.10",
-)
-bazel_dep(
-    name = "bazel_skylib",
-    version = "1.7.1",
-)
+bazel_dep(name = "rules_rust", version = "0.57.1")
 
 crate = use_extension(
     "@rules_rust//crate_universe:extensions.bzl",

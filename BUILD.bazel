@@ -7,6 +7,7 @@ package(default_visibility = ["//visibility:public"])
 rust_binary(
     name = "oxc_dts_emit",
     srcs = ["src/main.rs"],
+    deps = ["@crates//:oxc"],
 )
 
 build_test(
