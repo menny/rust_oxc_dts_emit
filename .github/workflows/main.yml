@@ -32,3 +32,34 @@ jobs:
           if [[ $(git status --porcelain) ]]; then echo "**** run 'bazel run @rules_rust//:rustfmt' to fix formatting errors"; exit 1; fi
       - name: test
         run: bazel test //...
+  build_release_binaries:
+    if: github.ref == 'refs/heads/main'
+    needs: checks
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+        arch: [x64, arm64]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: bazel-contrib/setup-bazel@0.9.1
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+      - name: build
+        run: bazel build //:oxc_dts_emit -o opt
+      - name: store binary
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          path: bazel-bin/oxc_dts_emit
+  download_artifacts:
+    needs: build_release_binaries
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4.1.8
+        with:
+          path: ./artifacts
+      - name: the files
+        run: ls -al artifacts/
