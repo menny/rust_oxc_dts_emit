@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@rules_rust//rust:defs.bzl", "rust_binary")
 
@@ -15,9 +16,12 @@ build_test(
     ],
 )
 
-build_test(
-    name = "rust_fmt",
-    targets = [
-        "@rules_rust//:rustfmt",
-    ],
+copy_to_bin(
+    name = "gitignore",
+    srcs = [".gitignore"],
+)
+
+copy_to_bin(
+    name = "yamlfmt.yml",
+    srcs = [".yamlfmt.yml"],
 )

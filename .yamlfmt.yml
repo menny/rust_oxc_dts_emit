@@ -1,0 +1,6 @@
+---
+gitignore_excludes: true
+indent: 2
+formatter:
+  type: basic
+  include_document_start: true

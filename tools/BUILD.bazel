@@ -1,0 +1,38 @@
+load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
+load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+native_binary(
+    name = "yamlfmt_runner",
+    src = "@multitool//tools/yamlfmt",
+    args = [
+        "-conf",
+        "$(execpath //:yamlfmt.yml)",
+        "-output_format",
+        "default",
+    ],
+    data = [
+        "//:gitignore",
+        "//:yamlfmt.yml",
+    ],
+)
+
+native_binary(
+    name = "rustfmt_runner",
+    src = "@rules_rust//:rustfmt",
+    args = [
+        "--all",
+    ],
+    data = [
+        "//:gitignore",
+    ],
+)
+
+# `run`ing this target will format the entire repo
+format_multirun(
+    name = "format",
+    rust = ":rustfmt_runner",
+    starlark = "@buildifier_prebuilt//:buildifier",
+    yaml = ":yamlfmt_runner",
+)

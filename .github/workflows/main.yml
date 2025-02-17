@@ -1,0 +1,34 @@
+---
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+    paths-ignore:
+      - '**.md'
+env:
+  TERM: dumb
+  TMPDIR: "/tmp"
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: bazel-contrib/setup-bazel@0.9.1
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+      - name: build
+        run: bazel build //...
+      - name: formatting
+        run: |
+          bazel run //tools:format
+          if [[ $(git status --porcelain) ]]; then echo "**** run 'bazel run //tools:format' to fix formatting errors"; exit 1; fi
+          bazel run @rules_rust//:rustfmt
+          if [[ $(git status --porcelain) ]]; then echo "**** run 'bazel run @rules_rust//:rustfmt' to fix formatting errors"; exit 1; fi
+      - name: test
+        run: bazel test //...
