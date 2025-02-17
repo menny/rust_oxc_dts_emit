@@ -23,7 +23,7 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
       - name: build
-        run: bazel build //...
+        run: bazel build --lockfile_mode=error //...
       - name: formatting
         run: |
           bazel run //tools:format
