@@ -20,7 +20,7 @@ jobs:
       - uses: bazel-contrib/setup-bazel@0.9.1
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
+          disk-cache: ${{ github.workflow }}_${{ hashFiles('.bazelversion') }}
           repository-cache: true
       - name: build
         run: bazel build //...

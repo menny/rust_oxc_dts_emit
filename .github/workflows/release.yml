@@ -24,7 +24,7 @@ jobs:
       - uses: bazel-contrib/setup-bazel@0.9.1
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
+          disk-cache: ${{ github.workflow }}_${{ matrix.artifact_postfix }}_${{ hashFiles('.bazelversion') }}
           repository-cache: true
       - name: build
         run: bazel build //:oxc_dts_emit -c opt
@@ -51,9 +51,9 @@ jobs:
           tar -czvf artifacts/oxc_dts_emit_macos_x86.tar.gz -C artifacts/oxc_dts_emit_macos_x86 oxc_dts_emit
       - name: Generate sha for artifacts
         run: |
-          echo "oxc_dts_emit v${{ github.ref_name }} from tag ${{ github.ref }} ${{ github.sha }}." > artifacts/body.txt
+          echo "The \`oxc_dts_emit\` binaries for tag \`${{ github.ref_name }}\` were built from ${{ github.sha }}." > artifacts/body.txt
           echo "" >> artifacts/body.txt
-          echo "## <ins>Binaries and SHA256:</ins>" >> artifacts/body.txt
+          echo "### <ins>Binaries and SHA256:</ins>" >> artifacts/body.txt
           echo "\`\`\`" >> artifacts/body.txt
           sha256sum artifacts/oxc_dts_emit_linux_arm64.tar.gz >> artifacts/body.txt
           sha256sum artifacts/oxc_dts_emit_linux_x86.tar.gz >> artifacts/body.txt
@@ -67,6 +67,7 @@ jobs:
           make_latest: true
           generate_release_notes: true
           body_path: artifacts/body.txt
+          append_body: true
           files: |
             artifacts/oxc_dts_emit_linux_arm64.tar.gz
             artifacts/oxc_dts_emit_linux_x86.tar.gz
