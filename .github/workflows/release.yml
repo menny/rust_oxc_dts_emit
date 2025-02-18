@@ -1,0 +1,43 @@
+---
+name: Create Release
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build_release_binaries:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+        arch: [x64, arm64]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: bazel-contrib/setup-bazel@0.9.1
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+      - name: build
+        run: bazel build //:oxc_dts_emit -c opt
+      - name: store binary
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          path: bazel-bin/oxc_dts_emit
+  release_creation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4.1.8
+        with:
+          path: ./artifacts
+      - name: the files
+        run: ls -al artifacts/
+      - name: Release
+        uses: softprops/action-gh-release@v2.2.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: oxc_dts_emit v${{ github.ref }}
+          make_latest: true
