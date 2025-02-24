@@ -2829,7 +2829,7 @@
           "@@rules_rust~~rust_host_tools~rust_host_tools//bin/rustc": "b953c69e6f682bf55e39bdd55bdcbd3e1cc0cbdf9dfda24b9c6478ee2c38359b",
           "@@//Cargo.toml": "29a36198e638fec015921f652b8ae08b1fe0e755af1c65cc9fe0e45fe1f69348",
           "@@//Cargo.lock": "3bbb1247ad568847cf07eaab622411bd45120ba124a6983e4094702313c308ae",
-          "@@//MODULE.bazel": "aee84fd436a3f881aa24d285934c8213dd9b69ea9e253adf8433a3dda1f6af60",
+          "@@//MODULE.bazel": "d39dc4940e61e9a1a9a6e5253696e63a8aefce289a78095becc8613310b1335a",
           "@@rules_rust~~rust_host_tools~rust_host_tools//bin/cargo": "be459aeefa634aa6693a9a4741cfa4d63dd8a50af2d1a8ff221b7565e7eb4e4c"
         },
         "recordedDirentsInputs": {},

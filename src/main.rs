@@ -51,7 +51,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // the first cell is the path to the executable
     let args: Vec<String> = env::args().skip(1).collect();
 
-    if args.len() == 0 || args.len() % 2 != 0 {
+    if args.len() == 0 {
         println!("Usage: oxc_dts_emit [<input_file>:<output_file>]...");
         return Err("Incorrect number of arguments".into());
     }
@@ -60,7 +60,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     let success = args
         .iter()
         .map(|input_output_pair| input_output_pair.split_once(":"))
-        .map(|op| op.expect("Must delimit with ':'!"))
+        .map(|op| {
+            op.expect("Must delimit with ':'! Usage: oxc_dts_emit [<input_file>:<output_file>]...")
+        })
         .map(|chunk| (Path::new(chunk.0), Path::new(chunk.1))) // Convert to &str
         .map(|(input_path, output_path)| {
             std::fs::read_to_string(input_path)

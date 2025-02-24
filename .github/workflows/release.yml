@@ -35,6 +35,7 @@ jobs:
         with:
           path: bazel-bin/oxc_dts_emit
           name: oxc_dts_emit_${{ matrix.artifact_postfix }}
+          if-no-files-found: error
   release_creation:
     needs: build_release_binaries
     runs-on: ubuntu-latest
@@ -47,12 +48,19 @@ jobs:
           path: ./artifacts
       - name: pack artifacts to os/arch archives
         run: |
-          find artifacts/ -exec ls -l {} \;
+          ls -al artifacts/
+          ls -al artifacts/oxc_dts_emit_linux_arm64/
+          chmod +x artifacts/oxc_dts_emit_linux_arm64/oxc_dts_emit
           tar -czvf artifacts/oxc_dts_emit_linux_arm64.tar.gz -C artifacts/oxc_dts_emit_linux_arm64 oxc_dts_emit
+          ls -al artifacts/oxc_dts_emit_linux_x86/
+          chmod +x artifacts/oxc_dts_emit_linux_x86/oxc_dts_emit
           tar -czvf artifacts/oxc_dts_emit_linux_x86.tar.gz -C artifacts/oxc_dts_emit_linux_x86 oxc_dts_emit
+          ls -al artifacts/oxc_dts_emit_macos_arm64/
+          chmod +x artifacts/oxc_dts_emit_macos_arm64/oxc_dts_emit
           tar -czvf artifacts/oxc_dts_emit_macos_arm64.tar.gz -C artifacts/oxc_dts_emit_macos_arm64 oxc_dts_emit
+          ls -al artifacts/oxc_dts_emit_macos_x86/
+          chmod +x artifacts/oxc_dts_emit_macos_x86/oxc_dts_emit
           tar -czvf artifacts/oxc_dts_emit_macos_x86.tar.gz -C artifacts/oxc_dts_emit_macos_x86 oxc_dts_emit
-          find artifacts/ -exec ls -l {} \;
       - name: Generate sha for artifacts
         run: |
           echo "The \`oxc_dts_emit\` binaries for tag \`${{ github.ref_name }}\` were built from ${{ github.sha }}." > artifacts/body.txt
