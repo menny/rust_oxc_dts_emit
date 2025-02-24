@@ -48,17 +48,12 @@ jobs:
           path: ./artifacts
       - name: pack artifacts to os/arch archives
         run: |
-          ls -al artifacts/
-          ls -al artifacts/oxc_dts_emit_linux_arm64/
           chmod +x artifacts/oxc_dts_emit_linux_arm64/oxc_dts_emit
           tar -czvf artifacts/oxc_dts_emit_linux_arm64.tar.gz -C artifacts/oxc_dts_emit_linux_arm64 oxc_dts_emit
-          ls -al artifacts/oxc_dts_emit_linux_x86/
           chmod +x artifacts/oxc_dts_emit_linux_x86/oxc_dts_emit
           tar -czvf artifacts/oxc_dts_emit_linux_x86.tar.gz -C artifacts/oxc_dts_emit_linux_x86 oxc_dts_emit
-          ls -al artifacts/oxc_dts_emit_macos_arm64/
           chmod +x artifacts/oxc_dts_emit_macos_arm64/oxc_dts_emit
           tar -czvf artifacts/oxc_dts_emit_macos_arm64.tar.gz -C artifacts/oxc_dts_emit_macos_arm64 oxc_dts_emit
-          ls -al artifacts/oxc_dts_emit_macos_x86/
           chmod +x artifacts/oxc_dts_emit_macos_x86/oxc_dts_emit
           tar -czvf artifacts/oxc_dts_emit_macos_x86.tar.gz -C artifacts/oxc_dts_emit_macos_x86 oxc_dts_emit
       - name: Generate sha for artifacts
