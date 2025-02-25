@@ -20,6 +20,7 @@ rust_binary(
             "-Cpanic=abort",
             "-Copt-level=3",
             "-Cstrip=symbols",
+            "-Ctarget-feature=+crt-static",
         ],
         "//conditions:default": [
             "-Copt-level=0",
