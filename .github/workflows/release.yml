@@ -30,6 +30,12 @@ jobs:
         run: bazel build --config opt //:oxc_dts_emit
       - name: make executable
         run: chmod +x bazel-bin/oxc_dts_emit
+      - name: Compress binaries
+        uses: svenstaro/upx-action@2.4.1
+        with:
+          args: --best
+          files: |
+            bazel-bin/oxc_dts_emit
       - name: store binary
         uses: actions/upload-artifact@v4.6.0
         with:
@@ -46,15 +52,6 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           path: ./artifacts
-      - name: Compress binaries
-        uses: svenstaro/upx-action@2.4.1
-        with:
-          args: --best
-          files: |
-            artifacts/oxc_dts_emit_linux_arm64/oxc_dts_emit
-            artifacts/oxc_dts_emit_linux_x86/oxc_dts_emit
-            artifacts/oxc_dts_emit_macos_arm64/oxc_dts_emit
-            artifacts/oxc_dts_emit_macos_x86/oxc_dts_emit
       - name: pack artifacts to os/arch archives
         run: |
           chmod +x artifacts/oxc_dts_emit_linux_arm64/oxc_dts_emit
