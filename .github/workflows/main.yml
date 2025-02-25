@@ -24,6 +24,8 @@ jobs:
           repository-cache: true
       - name: build
         run: bazel build //...
+      - name: build release
+        run: bazel build --config opt //:oxc_dts_emit
       - name: formatting
         run: |
           # I need to figure this out, but the lock file changes when running on linux (I created it on mac)
