@@ -1,5 +1,5 @@
-# rust_oxc_dts_emit
-Rust wrapper for oxc dts emitter
+# oxc_dts_emit
+Rust wrapper for [oxc dts emitter](https://crates.io/crates/oxc).
 
 ## How to run
 Using Bazel:
