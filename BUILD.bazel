@@ -1,6 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
-load("@rules_rust//rust:defs.bzl", "rust_binary")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -44,4 +44,9 @@ copy_to_bin(
 copy_to_bin(
     name = "yamlfmt.yml",
     srcs = [".yamlfmt.yml"],
+)
+
+rust_test(
+    name = "oxc_dts_emit_test",
+    crate = ":oxc_dts_emit",
 )

@@ -82,3 +82,32 @@ fn main() -> Result<(), Box<dyn Error>> {
         Err("dts emit failure".into())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_emit_dts_with_valid_typescript() {
+        let allocator = Allocator::default();
+        let contents = String::from("export const pony: string = 'Pinkie Pie';");
+        let source_type = SourceType::from_path(Path::new("pony.ts")).unwrap();
+        
+        let result = _emit_dts(&allocator, &contents, source_type);
+        assert!(result.is_ok(), "Expected successful dts generation");
+        
+        let dts_content = result.unwrap();
+        assert!(dts_content.contains("export declare const pony: string"), 
+            "Generated .d.ts should contain the exported declaration");
+    }
+    
+    #[test]
+    fn test_emit_dts_with_untype_typescript() {
+        let allocator = Allocator::default();
+        let contents = String::from("export const pony = getUnknownObject();");
+        let source_type = SourceType::from_path(Path::new("pony.ts")).unwrap();
+        
+        let result = _emit_dts(&allocator, &contents, source_type);
+        assert!(result.is_err(), "Expected error for invalid input");
+    }
+}
