@@ -26,8 +26,8 @@ jobs:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}_${{ matrix.artifact_postfix }}_${{ hashFiles('.bazelversion') }}
           repository-cache: true
-      - name: build
-        run: bazel build //:oxc_dts_emit -c opt
+      - name: build release
+        run: bazel build --config opt //:oxc_dts_emit
       - name: make executable
         run: chmod +x bazel-bin/oxc_dts_emit
       - name: store binary

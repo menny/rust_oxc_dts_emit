@@ -6,3 +6,14 @@ common --tool_java_language_version=17
 common --tool_java_runtime_version=remotejdk_17
 
 test --build_tests_only
+
+build --incompatible_disallow_empty_glob
+
+build --incompatible_merge_fixed_and_default_shell_env
+
+# https://github.com/bazelbuild/bazel/issues/23043.
+build --incompatible_autoload_externally=
+
+# in optimized build we will use thin lto
+common:opt -c opt
+common:opt --@rules_rust//rust/settings:lto=thin
