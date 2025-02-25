@@ -10,14 +10,19 @@ jobs:
       matrix:
         os: [ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-15]
         include:
+          - support_upx: true
+          - upx_args: --best
           - os: ubuntu-24.04
             artifact_postfix: linux_x86
-          - os: macos-13
-            artifact_postfix: macos_x86
           - os: ubuntu-24.04-arm
             artifact_postfix: linux_arm64
+            support_upx: false
+          - os: macos-13
+            artifact_postfix: macos_x86
+            upx_args: --best --force-macos
           - os: macos-15
             artifact_postfix: macos_arm64
+            upx_args: --best --force-macos
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4.2.2
@@ -32,9 +37,9 @@ jobs:
         run: chmod 755 bazel-bin/oxc_dts_emit
       - name: Compress binaries
         uses: svenstaro/upx-action@2.4.1
-        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        if: ${{ matrix.support_upx }}
         with:
-          args: --best
+          args: ${{ matrix.upx_args }}
           files: |
             bazel-bin/oxc_dts_emit
       - name: store binary
