@@ -28,10 +28,11 @@ jobs:
           repository-cache: true
       - name: build release
         run: bazel build --config opt //:oxc_dts_emit
-      - name: make executable
-        run: chmod +x bazel-bin/oxc_dts_emit
+      - name: make executable, readable, and writable
+        run: chmod 755 bazel-bin/oxc_dts_emit
       - name: Compress binaries
         uses: svenstaro/upx-action@2.4.1
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
         with:
           args: --best
           files: |
