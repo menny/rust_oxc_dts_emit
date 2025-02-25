@@ -5,4 +5,4 @@ edition = "2021"
 publish = false
 
 [dependencies]
-oxc = { version = "0.52.0", features = ["full"] }
+oxc = { version = "0.52.0", features = ["isolated_declarations", "codegen"] }
