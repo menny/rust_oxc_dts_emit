@@ -1,6 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
-load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_test")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_clippy", "rust_test", "rustfmt_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -36,9 +36,31 @@ build_test(
     ],
 )
 
+rust_clippy(
+    name = "oxc_dts_emit_clippy",
+    deps = [":oxc_dts_emit"],
+)
+
+build_test(
+    name = "oxc_dts_emit_clippy_test",
+    targets = [
+        ":oxc_dts_emit_clippy",
+    ],
+)
+
+rustfmt_test(
+    name = "oxc_dts_emit_fmt",
+    targets = [":oxc_dts_emit"],
+)
+
 copy_to_bin(
     name = "gitignore",
     srcs = [".gitignore"],
+)
+
+copy_to_bin(
+    name = "rustfmt.toml",
+    srcs = [".rustfmt.toml"],
 )
 
 copy_to_bin(

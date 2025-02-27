@@ -17,3 +17,5 @@ build --incompatible_autoload_externally=
 # in optimized build we will use thin lto
 common:opt -c opt
 common:opt --@rules_rust//rust/settings:lto=thin
+
+build --@rules_rust//rust/settings:rustfmt.toml=//:rustfmt.toml
